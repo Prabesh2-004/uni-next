@@ -4,17 +4,20 @@ import Template2 from "@/components/cv-template/Template2";
 import Template3 from "@/components/cv-template/Template3";
 import type { ComponentType } from "react";
 
+type ResumeData = Awaited<ReturnType<typeof getResumeById>>;
+type TemplateProps = { data: ResumeData };
+
 export default async function TemplatePage({
   params,
 }: {
-  params: Promise<{ id: string }>; // ⬅️ Next.js 15+ requires Promise
+  params: Promise<{ id: string }>;
 }) {
-  const { id } = await params; // ⬅️ Await before using
+  const { id } = await params;
   const resume = await getResumeById(id);
 
   if (!resume) return <div>Resume not found</div>;
 
-  const templateMap: Record<string, ComponentType<{ data: typeof resume }>> = {
+  const templateMap: Record<string, ComponentType<TemplateProps>> = {
     "template-1": Template1,
     "template-2": Template2,
     "template-3": Template3,
