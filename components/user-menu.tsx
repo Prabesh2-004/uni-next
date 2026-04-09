@@ -18,6 +18,7 @@ import {
   UserIcon,
 } from "lucide-react";
 import { LogoutButton } from "./logout-button";
+import Link from "next/link";
 
 export function UserMenu() {
   return (
@@ -40,7 +41,9 @@ export function UserMenu() {
           </DropdownMenuItem>
           <DropdownMenuItem>
             <SettingsIcon />
-            Setting
+            <Link href="/setting">
+              Setting
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />

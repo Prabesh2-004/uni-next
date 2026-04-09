@@ -63,7 +63,7 @@ export async function proxy(request: NextRequest) {
     if (role === "ADMIN") {
       return NextResponse.redirect(new URL("/admin", request.url));
     }
-    return NextResponse.redirect(new URL("/protected", request.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   // 5. Admin route → check role in profiles table
@@ -74,7 +74,7 @@ export async function proxy(request: NextRequest) {
       const lastActivePage =
         referrer && new URL(referrer).pathname !== pathname
           ? referrer
-          : new URL("/protected", request.url).toString();
+          : new URL("/", request.url).toString();
 
       return NextResponse.redirect(new URL(lastActivePage));
     }

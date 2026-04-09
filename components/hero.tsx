@@ -5,7 +5,7 @@ import { ArrowRight, ReceiptText } from "lucide-react";
 
 export function Hero() {
   return (
-    <section className="relative w-full h-[calc(100vh-65px)]">
+    <section className="relative w-full h-screen">
       <Image
         src="/hero-uni.jpg"
         alt="university"
