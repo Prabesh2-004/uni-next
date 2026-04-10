@@ -758,7 +758,6 @@ function TemplateSelect({
 }) {
   const selected = draft.templateId;
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
-  const [saveErr, setSaveErr] = useState("");
   const [downloading, setDl] = useState(false);
 
   const resumeData: ResumeData = {
@@ -790,7 +789,6 @@ function TemplateSelect({
 
     let cancelled = false;
     setSaveStatus("saving");
-    setSaveErr("");
 
     const timer = setTimeout(async () => {
       if (cancelled) return;
@@ -802,10 +800,9 @@ function TemplateSelect({
             if (!cancelled) setSaveStatus("idle");
           }, 2000);
         }
-      } catch (e: unknown) {
+      } catch {
         if (!cancelled) {
           setSaveStatus("error");
-          setSaveErr(e instanceof Error ? e.message : "Failed to save.");
         }
       }
     }, 500);
@@ -832,39 +829,8 @@ function TemplateSelect({
       {/* ── Left: template cards + actions ── */}
       <div className="flex flex-col gap-3">
         <p className="text-xs italic text-slate-400 dark:text-slate-500">
-          Pick a template — auto-saves &amp; opens preview
+          Pick a template
         </p>
-
-        {/* Save status pill */}
-        {selected && saveStatus !== "idle" && (
-          <div
-            className={`flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-lg border transition-colors ${saveStatus === "error"
-                ? "bg-red-50 dark:bg-red-950/40 border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400"
-                : saveStatus === "saving"
-                  ? "bg-amber-50 dark:bg-amber-950/40 border-amber-200 dark:border-amber-900/60 text-amber-700 dark:text-amber-400"
-                  : "bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-900/60 text-emerald-700 dark:text-emerald-400"
-              }`}
-          >
-            {saveStatus === "saving" && (
-              <>
-                <Loader2 size={12} className="animate-spin flex-shrink-0" />
-                <span>Saving…</span>
-              </>
-            )}
-            {saveStatus === "saved" && (
-              <>
-                <CheckCircle size={12} className="text-emerald-500 flex-shrink-0" />
-                <span>Saved — opening preview…</span>
-              </>
-            )}
-            {saveStatus === "error" && (
-              <>
-                <AlertCircle size={12} className="text-red-500 flex-shrink-0" />
-                <span>{saveErr}</span>
-              </>
-            )}
-          </div>
-        )}
 
         <div className="flex flex-col gap-2">
           {TMPL.map((t) => (
@@ -1083,7 +1049,7 @@ export default function CVBuilder() {
 
         {/* ── Progress bar ── */}
         <div
-          className="flex items-center px-5 sm:px-7 py-4 gap-0 overflow-x-auto
+          className="flex items-center justify-between px-5 sm:px-7 py-4 gap-0 overflow-x-auto
           bg-slate-50 dark:bg-slate-900/60
           border-b border-slate-100 dark:border-slate-800"
         >
@@ -1118,7 +1084,7 @@ export default function CVBuilder() {
                 </span>
                 {i < STEPS.length - 1 && (
                   <div
-                    className={`h-0.5 mx-2 min-w-[14px] rounded-full transition-colors duration-300
+                    className={`h-0.5 mx-2 min-w-[100px] rounded-full transition-colors duration-300
                     ${step > i + 1 ? "bg-blue-500 dark:bg-blue-400" : "bg-slate-200 dark:bg-slate-700"}`}
                   />
                 )}

@@ -4,12 +4,10 @@ import * as React from "react"
 import {
   AudioWaveform,
   BookOpen,
-  Bot,
   Command,
-  Frame,
   GalleryVerticalEnd,
-  Map,
-  PieChart,
+  Calendar,
+  CalendarPlus,
   Settings2,
   SquareTerminal,
 } from "lucide-react"
@@ -25,6 +23,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
+
 
 // This is sample data.
 const data = {
@@ -58,58 +57,31 @@ const data = {
       isActive: true,
       items: [
         {
-          title: "History",
-          url: "#",
+          title: "Dashboard",
+          url: "/admin",
         },
         {
-          title: "Starred",
-          url: "#",
+          title: "Users",
+          url: "/admin/users",
         },
         {
           title: "Settings",
-          url: "#",
+          url: "/admin/settings",
         },
       ],
     },
     {
-      title: "Models",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Documentation",
+      title: "Counselors",
       url: "#",
       icon: BookOpen,
       items: [
         {
-          title: "Introduction",
-          url: "#",
+          title: "Add Counselor",
+          url: "/counselors/add",
         },
         {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
+          title: "List Counselor",
+          url: "/counselors/list",
         },
       ],
     },
@@ -120,38 +92,33 @@ const data = {
       items: [
         {
           title: "General",
-          url: "#",
+          url: "/settings/general",
         },
         {
-          title: "Team",
-          url: "#",
+          title: "Users",
+          url: "/settings/users",
         },
         {
           title: "Billing",
-          url: "#",
+          url: "/settings/billing",
         },
         {
-          title: "Limits",
-          url: "#",
+          title: "Counselors",
+          url: "/settings/counselors",
         },
       ],
     },
   ],
   projects: [
     {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
+      name: "Live Events",
+      url: "/events",
+      icon: Calendar,
     },
     {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
+      name: "Host Events",
+      url: "/host-events",
+      icon: CalendarPlus,
     },
   ],
 }
@@ -167,7 +134,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

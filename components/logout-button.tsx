@@ -15,5 +15,5 @@ export function LogoutButton() {
     router.refresh();
   };
 
-  return <Button className="text-red-500 w-full h-8 pr-14 focus:text-red-500 hover:text-red-500" variant={"ghost"} size={"xs"} onClick={logout}> <LogOutIcon />Logout</Button>;
+  return <Button className="text-red-500 w-full h-8 flex justify-start focus:text-red-500 hover:text-red-500" variant={"ghost"} onClick={logout}> <LogOutIcon />Logout</Button>;
 }
