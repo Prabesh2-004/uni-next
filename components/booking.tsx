@@ -106,12 +106,16 @@ export default function Booking() {
     const fetchData = async () => {
       const { data } = await supabase
         .from("counselor")
-        .select("id, first_name, last_name, email, phone, avatar, is_active, counselor_experience (*), counselor_education (*)");
+        .select(`
+          id, first_name, last_name, email, phone, avatar, is_active,
+          counselor_experience!counselor_experience_counselor_id_fkey(*),
+          counselor_education!counselor_education_counselor_id_fkey(*)
+        `)
+        .eq('is_active', true);
       setCounselorsData((data as unknown as Counselor[]) || []);
     };
     fetchData();
   }, []);
-
 
   const handleSubmit = async () => {
     try {
@@ -131,7 +135,7 @@ export default function Booking() {
       });
       setSubmitted(true)
       setStep(0)
-    } catch {}
+    } catch { }
   };
 
   const [formData, setFormData] = useState<UserFormData>({
@@ -200,6 +204,13 @@ export default function Booking() {
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {counselorsData.map((c) => {
+          const experience = Array.isArray(c.counselor_experience)
+            ? c.counselor_experience[0]
+            : c.counselor_experience;
+
+          const education = Array.isArray(c.counselor_education)
+            ? c.counselor_education[0]
+            : c.counselor_education;
           const active = booking.counselor?.id === c.id;
           const isActive = c.is_active;
           if (isActive) {
@@ -223,18 +234,18 @@ export default function Booking() {
                   className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold shrink-0
                   ${active ? "bg-blue-500 text-white" : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"}`}
                 >
-                  {c.avatar}
+                  {c.avatar || `${c.first_name.charAt(0)}${c.last_name.charAt(0)}`}
                 </div>
                 <div>
                   <p className="font-semibold text-sm text-gray-900 dark:text-gray-100">
                     {c.first_name} {c.last_name}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
-                    <Briefcase size={11} /> {c.counselor_education?.degree}
+                    <Briefcase size={11} /> {education?.degree}
                   </p>
                   <p className="text-xs text-blue-500 font-medium mt-0.5">
-                    {c.counselor_experience?.start_date
-                      ? `Experience: ${new Date().getFullYear() - new Date(c.counselor_experience.start_date).getFullYear()} + years`
+                    {experience?.start_date
+                      ? `Experience: ${new Date().getFullYear() - new Date(experience.start_date).getFullYear()} + years`
                       : "N/A"}
                   </p>
                 </div>
