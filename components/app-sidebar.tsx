@@ -77,11 +77,11 @@ const data = {
       items: [
         {
           title: "Add Counselor",
-          url: "/counselors/add",
+          url: "/admin/add-counselor",
         },
         {
           title: "List Counselor",
-          url: "/counselors/list",
+          url: "/admin/list-counselor",
         },
       ],
     },

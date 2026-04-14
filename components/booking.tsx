@@ -15,8 +15,25 @@ import {
 import { useEffect, useState } from "react";
 import { useAvailableDates, AvailableDate } from "@/lib/available-date";
 import { Button } from "./ui/button";
-// import CounselorData from "@/lib/fetch-data";
 import { createClient } from "@/lib/supabase/client";
+
+interface CounselorExperience {
+  id: string;
+  job_title: string;
+  start_date: string;
+  end_date: string | null;
+  workplace_name: string;
+  is_current: boolean;
+  description: string | null;
+}
+
+interface CounselorEducation {
+  id: string;
+  degree: string;
+  field_of_study: string;
+  institution_name: string;
+  graduation_year: string;
+}
 
 interface Counselor {
   id: string;
@@ -25,6 +42,9 @@ interface Counselor {
   email: string;
   phone: string;
   avatar: string;
+  is_active: boolean;
+  counselor_experience: CounselorExperience | null;
+  counselor_education: CounselorEducation | null;
 }
 
 interface StepsBar {
@@ -86,12 +106,12 @@ export default function Booking() {
     const fetchData = async () => {
       const { data } = await supabase
         .from("counselor")
-        .select("id, first_name, last_name, email, phone, avatar");
-      setCounselorsData(data || []);
+        .select("id, first_name, last_name, email, phone, avatar, is_active, counselor_experience (*), counselor_education (*)");
+      setCounselorsData((data as unknown as Counselor[]) || []);
     };
-
     fetchData();
   }, []);
+
 
   const handleSubmit = async () => {
     try {
@@ -99,7 +119,7 @@ export default function Booking() {
         data: { user },
       } = await supabase.auth.getUser();
       const metadata = user?.id;
-      const { error } = await supabase.from("booking").insert({
+      await supabase.from("booking").insert({
         user_id: metadata,
         counselor_id: booking.counselor?.id,
         full_name: booking.personalInfo?.name,
@@ -111,19 +131,8 @@ export default function Booking() {
       });
       setSubmitted(true)
       setStep(0)
-      if(error) {
-        console.log(error)
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch {}
   };
-  // useEffect(() => {
-  //   const fetchData = async () => {
-
-  //   };
-  //   fetchData();
-  // }, []);
 
   const [formData, setFormData] = useState<UserFormData>({
     name: "",
@@ -192,16 +201,16 @@ export default function Booking() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {counselorsData.map((c) => {
           const active = booking.counselor?.id === c.id;
-          return (
-            <button
+          const isActive = c.is_active;
+          if (isActive) {
+            return <button
               key={c.id}
               type="button"
               onClick={() => update({ counselor: c })}
               className={`relative text-left p-4 rounded-xl border-2 transition-all duration-200
-                ${
-                  active
-                    ? "border-blue-500 bg-blue-50 dark:bg-blue-950/40 shadow-md shadow-blue-100 dark:shadow-blue-900/20"
-                    : "border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                ${active
+                  ? "border-blue-500 bg-blue-50 dark:bg-blue-950/40 shadow-md shadow-blue-100 dark:shadow-blue-900/20"
+                  : "border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-gray-50 dark:hover:bg-gray-800/50"
                 }`}
             >
               {active && (
@@ -221,15 +230,17 @@ export default function Booking() {
                     {c.first_name} {c.last_name}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
-                    <Briefcase size={11} /> {c.email}
+                    <Briefcase size={11} /> {c.counselor_education?.degree}
                   </p>
                   <p className="text-xs text-blue-500 font-medium mt-0.5">
-                    {c.phone}+ yrs
+                    {c.counselor_experience?.start_date
+                      ? `Experience: ${new Date().getFullYear() - new Date(c.counselor_experience.start_date).getFullYear()} + years`
+                      : "N/A"}
                   </p>
                 </div>
               </div>
             </button>
-          );
+          }
         })}
       </div>
     </div>
@@ -256,12 +267,11 @@ export default function Booking() {
                 onClick={() => update({ date: d, time: null })}
                 title={d.isBlocked ? `Blocked: ${d.blockReason}` : undefined}
                 className={`relative py-3 rounded-xl border-2 text-center transition-all duration-200
-                  ${
-                    d.isBlocked
-                      ? "border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 opacity-40 cursor-not-allowed"
-                      : isSelected
-                        ? "border-blue-500 bg-blue-500 text-white shadow-md shadow-blue-200 dark:shadow-blue-900/30"
-                        : "border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 cursor-pointer"
+                  ${d.isBlocked
+                    ? "border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 opacity-40 cursor-not-allowed"
+                    : isSelected
+                      ? "border-blue-500 bg-blue-500 text-white shadow-md shadow-blue-200 dark:shadow-blue-900/30"
+                      : "border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 cursor-pointer"
                   }`}
               >
                 {d.isBlocked && (
@@ -307,10 +317,9 @@ export default function Booking() {
                   type="button"
                   onClick={() => update({ time: t })}
                   className={`py-2 px-1 rounded-lg border-2 text-xs font-medium transition-all duration-200
-                    ${
-                      active
-                        ? "border-blue-500 bg-blue-500 text-white"
-                        : "border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 text-gray-600 dark:text-gray-400"
+                    ${active
+                      ? "border-blue-500 bg-blue-500 text-white"
+                      : "border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 text-gray-600 dark:text-gray-400"
                     }`}
                 >
                   {t}
@@ -546,11 +555,10 @@ export default function Booking() {
               >
                 <div
                   className={`w-9 h-9 rounded-full flex items-center justify-center border-2 transition-all duration-300 text-sm font-semibold
-                  ${
-                    isCompleted || isCurrent
+                  ${isCompleted || isCurrent
                       ? "bg-blue-500 border-blue-500 text-white shadow-md shadow-blue-200 dark:shadow-blue-900/40"
                       : "bg-white dark:bg-[#0a0a0a] border-gray-300 dark:border-gray-600 text-gray-400"
-                  }`}
+                    }`}
                 >
                   {isCompleted && !isCurrent ? <Check size={16} /> : s.step}
                 </div>

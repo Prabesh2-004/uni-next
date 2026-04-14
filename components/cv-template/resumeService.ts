@@ -127,7 +127,6 @@ export async function getMyResumes(): Promise<ResumeRow[]> {
     .order("updated_at", { ascending: false });
 
   if (error) {
-    console.error("getMyResumes error:", error.message);
     return [];
   }
   return data as ResumeRow[];
