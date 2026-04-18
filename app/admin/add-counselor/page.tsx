@@ -960,14 +960,14 @@ const CreateCounselor = () => {
   const progress = ((step - 1) / 3) * 100 + 25;
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-3xl mx-auto">
+    <div className="w-full max-w-3xl p-4 sm:p-6">
       <div className="mb-6">
         <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Add New Counselor</h1>
         <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Complete all four steps to register a counselor.</p>
       </div>
 
       {/* Desktop step track */}
-      <div className="hidden sm:flex items-center mb-4">
+      <div className="hidden sm:flex items-center mb-4 w-full">
         {STEPS.map((s, idx) => {
           const Icon = s.icon;
           const done = s.id < step;

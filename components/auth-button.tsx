@@ -59,7 +59,7 @@ export function AuthButton() {
 
   return user ? (
     <div className="flex items-center gap-4">
-      <div>
+      <div className="hidden md:flex">
         <Link href="/resume">
           <Button variant={"link"} size={"sm"}>
             Resume

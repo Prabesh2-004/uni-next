@@ -12,9 +12,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   Bug,
+  CalendarIcon,
+  CalendarSearch,
   CreditCardIcon,
+  FileUser,
+  Lightbulb,
   Menu,
   SettingsIcon,
+  University,
   UserIcon,
 } from "lucide-react";
 import { LogoutButton } from "./logout-button";
@@ -29,6 +34,40 @@ export function UserMenu() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-40" align="start">
+        <DropdownMenuGroup className="md:hidden">
+          <DropdownMenuLabel>Services</DropdownMenuLabel>
+          <DropdownMenuItem>
+            <FileUser />
+            <Link href="/resume">
+              Resume
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <CalendarIcon />
+            <Link href="/booking">
+              Book Counselor
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <University />
+            <Link href="/universities">
+              Universities
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <CalendarSearch />
+            <Link href="/events">
+              Events
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Lightbulb />
+            <Link href="/strategy-hub">
+              Strategy Hub
+            </Link>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuItem>

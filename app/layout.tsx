@@ -10,8 +10,12 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Next.js and Supabase Starter Kit",
-  description: "The fastest way to build apps with Next.js and Supabase",
+  title: {
+    default: "Dream Uni",
+    template: "%s | Dream Uni"
+  },
+  description: "Your one stop solution for all your university needs, CV Builder, University Finder, Event Finder, Strategy Hub, and more.",
+  keywords: ["dream uni", "university", "cv builder", "university finder", "event", "strategy hub", "resume", "cv-builder", "cv", "resume-builder", "resume builder", "cv builder", "free resume builder", "cv maker", "resume maker", "free cv builder", "free resume maker", "free cv maker", "free resume maker", "ai resume builder", "ai cv builder", "ai resume maker", "ai cv maker", "ai resume maker"]
 };
 
 const geistSans = Geist({
