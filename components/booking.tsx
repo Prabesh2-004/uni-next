@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import { useAvailableDates, AvailableDate } from "@/lib/available-date";
 import { Button } from "./ui/button";
 import { createClient } from "@/lib/supabase/client";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 interface CounselorExperience {
   id: string;
@@ -230,12 +231,24 @@ export default function Booking() {
                 </span>
               )}
               <div className="flex items-center gap-3">
-                <div
+                {/* <div
                   className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold shrink-0
                   ${active ? "bg-blue-500 text-white" : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"}`}
                 >
-                  {c.avatar || `${c.first_name.charAt(0)}${c.last_name.charAt(0)}`}
-                </div>
+                  {c.avatar ? (
+                    <Avatar>
+                      <AvatarImage src={c.avatar} />
+                      <AvatarFallback>{`${c.first_name.charAt(0)}${c.last_name.charAt(0)}`}</AvatarFallback>
+                    </Avatar>
+                  ) : (
+                    `${c.first_name.charAt(0)}${c.last_name.charAt(0)}`
+                  )}
+                </div> */}
+
+                <Avatar size="lg">
+                  <AvatarImage src={c.avatar} />
+                  <AvatarFallback>{`${c.first_name.charAt(0)}${c.last_name.charAt(0)}`}</AvatarFallback>
+                </Avatar>
                 <div>
                   <p className="font-semibold text-sm text-gray-900 dark:text-gray-100">
                     {c.first_name} {c.last_name}
