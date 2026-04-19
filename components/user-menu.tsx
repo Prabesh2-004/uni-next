@@ -72,7 +72,9 @@ export function UserMenu() {
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuItem>
             <UserIcon />
-            Profile
+            <Link href="/profile">
+              Profile
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <CreditCardIcon />

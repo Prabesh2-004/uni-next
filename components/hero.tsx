@@ -5,12 +5,12 @@ import { ArrowRight, ReceiptText } from "lucide-react";
 
 export function Hero() {
   return (
-    <section className="relative w-full h-screen">
+    <section className="relative w-full h-[calc(100vh-65px)]">
       <Image
         src="/hero-uni.jpg"
         alt="university"
         fill
-        sizes="(max-height: 90vh) height: 100vh"
+        sizes="(max-height: 90vh) height: 90vh"
         className="object-cover object-center"
         priority
       />

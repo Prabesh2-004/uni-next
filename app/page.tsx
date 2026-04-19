@@ -8,8 +8,8 @@ export const metadata = {
 export default function Home() {
   return (
     <main className="flex flex-col items-center">
-      <div className="flex-1 w-full flex flex-col gap-20 items-center">
-        <div className="flex-1 flex flex-col max-w-screen h-[calc(100vh-65px)] w-full">
+      <div className="flex-1 w-full flex flex-col items-center">
+        <div className="flex-1 flex flex-col max-w-screen h-screen w-full">
           <Hero />
         </div>
       </div>

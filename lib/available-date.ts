@@ -48,7 +48,7 @@ function generateWeekdays(daysAhead = 30): Omit<AvailableDate, "isBlocked" | "bl
     const dow = d.getDay(); // 0 = Sun, 6 = Sat
     if (dow === 0 || dow === 6) continue; // skip weekends
 
-    const iso = d.toISOString().split("T")[0];
+    const iso = d.toLocaleDateString("en-CA");
     days.push({
       date: d.getDate(),
       day: DAY_NAMES[dow],

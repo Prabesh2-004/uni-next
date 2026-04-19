@@ -39,7 +39,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ClientNavbar />
-          <div className="">{children}</div>
+          <div className="pt-16">{children}</div>
         </ThemeProvider>
       </body>
     </html>

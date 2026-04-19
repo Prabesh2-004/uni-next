@@ -537,7 +537,7 @@ export default function Booking() {
   }
 
   return (
-    <div className="flex justify-center pt-20 items-center h-screen px-4 py-8">
+    <div className="flex justify-center items-center h-screen px-4 py-8">
       <div className="flex flex-col w-full max-w-2xl bg-white dark:bg-[#0a0a0a] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-2xl overflow-hidden">
         {/* Header */}
         <div className="bg-gradient-to-r from-blue-600 to-blue-500 px-6 py-5">
