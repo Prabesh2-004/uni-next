@@ -36,7 +36,7 @@ export default function RootLayout({
                 >
                     <SidebarProvider>
                         <AppSidebar />
-                        <main className="flex-1 min-w-0 flex flex-col">
+                        <main className="flex-1 min-w-0 flex flex-col mt-[-64px]">
                             <SidebarTrigger className="m-3 self-start" />
                             <div className="flex-1 flex items-start justify-center px-4 pb-8">
                                 {children}
