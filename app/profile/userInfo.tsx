@@ -16,14 +16,26 @@ export default function UserInfo({ profile, email }: any) {
         if (!file.type.startsWith("image/")) return alert("Only images allowed.");
         setUploading(true);
 
+        // 1. Get signature from your API
+        const sigRes = await fetch("/api/user/update-avatar");
+        const { timestamp, signature, apiKey, cloudName } = await sigRes.json();
+
+        // 2. Upload directly to Cloudinary (bypasses Vercel size limit)
         const formData = new FormData();
         formData.append("file", file);
+        formData.append("api_key", apiKey);
+        formData.append("timestamp", timestamp);
+        formData.append("signature", signature);
+        formData.append("folder", "profile-pics");
+        formData.append("transformation", "c_fill,w_400,h_400");
 
-        const res = await fetch("/api/upload", { method: "POST", body: formData });
+        const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+            method: "POST",
+            body: formData,
+        });
         const data = await res.json();
 
         if (data.secure_url) {
-            // Save to DB
             await fetch("/api/user/update-avatar", {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
