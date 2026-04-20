@@ -31,13 +31,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-NQVRXR33S2"></script>
-      <script>
-        {`window.dataLayer = window.dataLayer || [];
+      <head>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-NQVRXR33S2"></script>
+        <script>
+          {`window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
           gtag('config', 'G-NQVRXR33S2');`}
-      </script>
+        </script>
+      </head>
       <body className={`${geistSans.className} antialiased`}>
         <ThemeProvider
           attribute="class"

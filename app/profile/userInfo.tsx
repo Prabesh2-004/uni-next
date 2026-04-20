@@ -35,6 +35,13 @@ export default function UserInfo({ profile, email }: any) {
         });
         const data = await res.json();
 
+        if (data.error) {
+            console.error("Cloudinary upload error:", data.error.message);
+            alert(data.error.message);
+            setUploading(false);
+            return;
+        }
+
         if (data.secure_url) {
             await fetch("/api/user/update-avatar", {
                 method: "PATCH",
