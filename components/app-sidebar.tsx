@@ -61,8 +61,8 @@ const data = {
           url: "/admin",
         },
         {
-          title: "Users",
-          url: "/admin/users",
+          title: "Booking",
+          url: "/admin/booking",
         },
         {
           title: "Settings",

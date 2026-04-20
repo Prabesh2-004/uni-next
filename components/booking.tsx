@@ -137,6 +137,12 @@ export default function Booking() {
       });
       setSubmitted(true)
       setStep(0)
+      setBooking({ counselor: null, date: null, time: null, personalInfo: null });
+      setFormData({ name: "", email: "", phone: "", details: "" });
+      localStorage.removeItem("booking");
+      localStorage.removeItem("bookingForm");
+      localStorage.removeItem("steps");
+
 
       await fetch("/api/send-email", {
         method: "POST",
@@ -170,6 +176,28 @@ export default function Booking() {
   useEffect(() => {
     localStorage.setItem("steps", JSON.stringify(step));
   }, [step]);
+
+  // Restore booking from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem("booking");
+    if (saved) setBooking(JSON.parse(saved));
+  }, []);
+
+  // Save booking to localStorage on change
+  useEffect(() => {
+    localStorage.setItem("booking", JSON.stringify(booking));
+  }, [booking]);
+
+  // Restore formData from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem("bookingForm");
+    if (saved) setFormData(JSON.parse(saved));
+  }, []);
+
+  // Save formData to localStorage on change
+  useEffect(() => {
+    localStorage.setItem("bookingForm", JSON.stringify(formData));
+  }, [formData]);
 
   // Auto-generates Mon–Fri for next 30 days, blocked dates come from admin panel
   const { dates } = useAvailableDates(30);
