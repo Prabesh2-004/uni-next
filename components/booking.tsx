@@ -18,6 +18,7 @@ import { Button } from "./ui/button";
 import { createClient } from "@/lib/supabase/client";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
+
 interface CounselorExperience {
   id: string;
   job_title: string;
@@ -136,6 +137,18 @@ export default function Booking() {
       });
       setSubmitted(true)
       setStep(0)
+
+      await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: booking.personalInfo?.email,
+          counselorName: `${booking.counselor?.first_name} ${booking.counselor?.last_name}`,
+          name: `${booking.personalInfo?.name}`,
+          date: `${booking.date?.day}, ${booking.date?.month} ${booking.date?.date}`,
+          time: booking.time,
+        }),
+      });
     } catch { }
   };
 
@@ -231,19 +244,6 @@ export default function Booking() {
                 </span>
               )}
               <div className="flex items-center gap-3">
-                {/* <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold shrink-0
-                  ${active ? "bg-blue-500 text-white" : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"}`}
-                >
-                  {c.avatar ? (
-                    <Avatar>
-                      <AvatarImage src={c.avatar} />
-                      <AvatarFallback>{`${c.first_name.charAt(0)}${c.last_name.charAt(0)}`}</AvatarFallback>
-                    </Avatar>
-                  ) : (
-                    `${c.first_name.charAt(0)}${c.last_name.charAt(0)}`
-                  )}
-                </div> */}
 
                 <Avatar size="lg">
                   <AvatarImage src={c.avatar} />
@@ -454,9 +454,10 @@ export default function Booking() {
       </p>
       <div className="rounded-xl border-2 border-gray-100 dark:border-gray-800 divide-y divide-gray-100 dark:divide-gray-800 overflow-hidden">
         <div className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-800/50">
-          <div className="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-bold shrink-0">
-            {booking.counselor?.avatar}
-          </div>
+          <Avatar size="lg">
+            <AvatarImage src={booking.counselor?.avatar} />
+            <AvatarFallback>{`${booking.counselor?.first_name.charAt(0)}${booking.counselor?.last_name.charAt(0)}`}</AvatarFallback>
+          </Avatar>
           <div>
             <p className="text-xs text-gray-500 dark:text-gray-400">
               Counselor
