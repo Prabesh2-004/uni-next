@@ -65,6 +65,10 @@ const data = {
           url: "/admin/booking",
         },
         {
+          title: "Date Control",
+          url: "/admin/date-control",
+        },
+        {
           title: "Settings",
           url: "/admin/settings",
         },
