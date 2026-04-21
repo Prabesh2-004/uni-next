@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { createClient } from "./supabase/client";
 
 export interface AvailableDate {
   date: number;
@@ -16,30 +17,44 @@ export interface BlockedDate {
   reason: string;
 }
 
-// ─── Storage key (swap these calls for API fetch/POST in production) ──────────
-const STORAGE_KEY = "admin_blocked_dates";
-
-export function getBlockedDates(): BlockedDate[] {
-  if (typeof window === "undefined") return [];
-  try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-  } catch {
-    return [];
-  }
+export async function getBlockedDates(): Promise<BlockedDate[]> {
+  const supabase = createClient();
+  const { data } = await supabase.from("blocked_dates").select("iso, reason");
+  return (data as BlockedDate[]) ?? [];
 }
 
-export function saveBlockedDates(dates: BlockedDate[]) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(dates));
+export async function saveBlockedDates(date: BlockedDate) {
+  const supabase = createClient();
+  await supabase.from("blocked_dates").upsert(date);
 }
 
+export async function removeBlockedDate(iso: string) {
+  const supabase = createClient();
+  await supabase.from("blocked_dates").delete().eq("iso", iso);
+}
 // ─── Generate Mon–Fri for the next `daysAhead` calendar days ─────────────────
-function generateWeekdays(daysAhead = 30): Omit<AvailableDate, "isBlocked" | "blockReason">[] {
+function generateWeekdays(
+  daysAhead = 30,
+): Omit<AvailableDate, "isBlocked" | "blockReason">[] {
   const days: Omit<AvailableDate, "isBlocked" | "blockReason">[] = [];
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
   const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const MONTH_NAMES = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
 
   for (let i = 1; i <= daysAhead; i++) {
     const d = new Date(today);
@@ -66,10 +81,14 @@ export function useAvailableDates(daysAhead = 30) {
   const [blockedDates, setBlockedDates] = useState<BlockedDate[]>([]);
 
   useEffect(() => {
-    setBlockedDates(getBlockedDates());
+    const supabase = createClient();
+    supabase
+      .from("blocked_dates")
+      .select("iso, reason")
+      .then(({ data }) => setBlockedDates((data as BlockedDate[]) ?? []));
   }, []);
 
-  const refresh = () => setBlockedDates(getBlockedDates());
+  const refresh = () => getBlockedDates().then(setBlockedDates);
 
   const weekdays = generateWeekdays(daysAhead);
 
