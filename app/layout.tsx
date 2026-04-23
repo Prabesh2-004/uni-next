@@ -3,6 +3,7 @@ import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { ClientNavbar } from "@/components/client-navbar";
+import { Suspense } from "react";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -47,7 +48,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ClientNavbar />
+          <Suspense fallback={null}>
+            <ClientNavbar />
+          </Suspense>
           <div className="pt-16">{children}</div>
         </ThemeProvider>
       </body>
