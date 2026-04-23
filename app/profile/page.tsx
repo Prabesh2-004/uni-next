@@ -1,68 +1,7 @@
-// "use client"
-
-// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-// import { Button } from "@/components/ui/button";
-// import { createClient } from "@/lib/supabase/client";
-// import { useEffect, useState } from "react";
-
-// interface User {
-//     id: string;
-//     email: string;
-//     first_name: string;
-//     last_name: string;
-//     bio: string;
-//     avatar_url: string;
-// }
-
-// export default function ProfilePage() {
-//     const [userData, setUserData] = useState<User | null>(null);
-
-//     useEffect(() => {
-//         async function fetchData() {
-//             const supabase = createClient();
-//             const { data: { user } } = await supabase.auth.getUser();
-//             if (user) {
-//                 const { data: profile } = await supabase
-//                     .from('profiles')
-//                     .select('*')
-//                     .eq('id', user.id)
-//                     .single();
-//                 setUserData(profile);
-//             }
-//         }
-//         fetchData();
-//     }, []);
-
-//     return (
-//         <div className="flex gap-3 pt-20 items-center h-screen px-4 py-8">
-//             <div className="flex-">
-//                 <div className="flex flex-col gap-4">
-//                     <div className="flex items-center flex-col justify-center gap-4 text-center">
-//                         <Avatar className="h-8 w-8 rounded-lg" size="xl">
-//                             <AvatarImage src={userData?.avatar_url} alt={userData?.first_name} />
-//                             <AvatarFallback className="rounded-lg">{userData?.first_name?.charAt(0)}{userData?.last_name?.charAt(0)}</AvatarFallback>
-//                         </Avatar>
-
-//                         <div className="flex flex-col">
-//                             <h1 className="text-2xl font-bold">{userData?.first_name} {userData?.last_name}</h1>
-//                             <p className="text-gray-500">{userData?.email}</p>
-//                             <p className="text-gray-500 max-w-lg">{userData?.bio}</p>
-//                         </div>
-//                         <Button>Edit Profile</Button>
-//                     </div>
-//                 </div>
-//             </div>
-//             <div className="flex-3 w-full">
-//                 <p>hello</p>
-//             </div>
-//         </div>
-//     );
-// }
-
-
 import { createClient } from "@/lib/supabase/server";
 import UserInfo from "./userInfo";
 import UpdateProfileForm from "./updateProfileForm";
+import { Suspense } from "react";
 
 export default async function ProfilePage() {
     const supabase = await createClient();
@@ -84,14 +23,16 @@ export default async function ProfilePage() {
     const bookings = bookingsRes?.data || [];
 
     return (
-        <div className="max-w-6xl mx-auto p-6 space-y-8 h-screen px-4 py-8">
-            <div className="grid md:grid-cols-2 gap-6 ">
-                <UserInfo profile={profile} email={user.email!} />
-                <UpdateProfileForm profile={profile} />
-            </div>
+        <Suspense fallback={null}>
+            <div className="max-w-6xl mx-auto p-6 space-y-8 h-screen px-4 py-8">
+                <div className="grid md:grid-cols-2 gap-6 ">
+                    <UserInfo profile={profile} email={user.email!} />
+                    <UpdateProfileForm profile={profile} />
+                </div>
 
-            <History resumes={resumes} bookings={bookings} />
-        </div>
+                <History resumes={resumes} bookings={bookings} />
+            </div>
+        </Suspense>
     );
 }
 
