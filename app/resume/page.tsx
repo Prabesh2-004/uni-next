@@ -1,4 +1,7 @@
+export const dynamic = 'force-dynamic';
+
 import CVBuilder from "@/components/resume";
+
 
 export const metadata = {
   title: "Resume",

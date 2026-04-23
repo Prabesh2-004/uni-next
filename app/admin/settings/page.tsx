@@ -1,5 +1,9 @@
+export const dynamic = 'force-dynamic';
+
 export default function SettingPage() {
     return (
-        <div>SettingPage</div>
+        <div>
+            <h2>Settings</h2>
+        </div>
     )
 }

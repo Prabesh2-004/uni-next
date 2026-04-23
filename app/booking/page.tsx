@@ -1,7 +1,8 @@
+export const dynamic = 'force-dynamic';
+
 import { Suspense } from "react";
 import Booking from "@/components/booking";
 
-export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: "Booking - Dream Uni",

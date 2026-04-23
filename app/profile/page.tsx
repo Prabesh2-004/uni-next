@@ -1,4 +1,5 @@
 export const dynamic = 'force-dynamic';
+
 import { createClient } from "@/lib/supabase/server";
 import UserInfo from "./userInfo";
 import UpdateProfileForm from "./updateProfileForm";

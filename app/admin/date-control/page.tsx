@@ -1,5 +1,8 @@
+export const dynamic = 'force-dynamic';
+
 import { Suspense } from "react";
 import AdminDatePanel from "@/components/admin-date-control";
+
 
 export default function AdminDateControlPage() {
   return (

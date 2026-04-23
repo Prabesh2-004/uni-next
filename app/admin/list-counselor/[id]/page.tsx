@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import CounselorDetailPage from "@/components/counselor-details";
 import { Suspense } from "react";
 

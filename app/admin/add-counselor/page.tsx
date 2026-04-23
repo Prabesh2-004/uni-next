@@ -1,6 +1,7 @@
+export const dynamic = 'force-dynamic';
+
 import CreateCounselor from "@/components/add-clounselors";
 
-export const dynamic = 'force-dynamic';
 
 export default function AddCounselor() {
   return(
