@@ -7,19 +7,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-// Sample event data structure
-interface Event {
-  id: string;
-  title: string;
-  category: string;
-  date: string;
-  month: string;
-  day: string;
-  time: string;
-  description: string;
-  image: string;
-}
-
 interface Events {
   id: string;
   title: string;
@@ -32,41 +19,6 @@ interface Events {
 
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
-const events: Event[] = [
-  {
-    id: 'winter-orchestral-concert',
-    title: 'Winter Orchestral Concert',
-    category: 'Arts & Culture',
-    date: 'Dec 12, 2024',
-    month: 'Dec',
-    day: '12',
-    time: '7:30 PM',
-    description: 'An evening of classical masterpieces performed by the Heritage University Symphony under the baton of Dr. Elena Vance.',
-    image: '/muhehehehehe.jpg',
-  },
-  {
-    id: 'alumni-networking-night',
-    title: 'Alumni Networking Night',
-    category: 'Student Life',
-    date: 'Nov 5, 2024',
-    month: 'Nov',
-    day: '05',
-    time: '6:00 PM',
-    description: 'Connect with distinguished graduates from diverse industries. A unique opportunity to bridge the gap between study and career.',
-    image: '/download (2).jpg',
-  },
-  {
-    id: 'future-of-ai-ethics-lecture',
-    title: 'Future of AI Ethics Lecture',
-    category: 'Academic',
-    date: 'Oct 19, 2024',
-    month: 'Oct',
-    day: '19',
-    time: '4:15 PM',
-    description: 'Exploring the philosophical and practical implications of artificial intelligence in modern democratic societies.',
-    image: '/download (3).jpg',
-  },
-];
 
 const categories = ['All Events', 'Academic', 'Arts & Culture', 'Athletics', 'Student Life'];
 

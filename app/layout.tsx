@@ -50,6 +50,7 @@ export default function RootLayout({
         >
           <Suspense fallback={null}>
             <ClientNavbar />
+            
           </Suspense>
           <div className="pt-16">{children}</div>
         </ThemeProvider>
