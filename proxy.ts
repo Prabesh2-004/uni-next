@@ -1,5 +1,3 @@
-export const runtime = 'edge';
-
 import { createServerClient } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
 
