@@ -15,7 +15,7 @@ const AUTH_ROUTES = ["/auth/login", "/auth/sign-up", "/auth/forgot-password"];
 
 const ADMIN_ROUTES = ["/admin"];
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
   // 1. Build client — this is what updateSession does internally
