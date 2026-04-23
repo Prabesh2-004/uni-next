@@ -20,9 +20,9 @@ interface BlockedDate {
 }
 
 // ─── Helpers ───────────────────────────────────────────────────────────────────
-const DAY_NAMES    = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-const MONTH_NAMES  = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-const SHORT_MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const SHORT_MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 function toISO(d: Date) {
   return d.toLocaleDateString("en-CA");
@@ -30,7 +30,7 @@ function toISO(d: Date) {
 
 function buildCalendarMonth(year: number, month: number) {
   const first = new Date(year, month, 1);
-  const last  = new Date(year, month + 1, 0);
+  const last = new Date(year, month + 1, 0);
   const cells: (Date | null)[] = [];
   for (let i = 0; i < first.getDay(); i++) cells.push(null);
   for (let d = 1; d <= last.getDate(); d++) cells.push(new Date(year, month, d));
@@ -76,17 +76,20 @@ async function deleteAllBlocked() {
 
 // ─── Main Component ────────────────────────────────────────────────────────────
 export default function AdminDatePanel() {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const [today] = useState(() => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return d;
+  });
 
-  const [viewYear,  setViewYear]  = useState(today.getFullYear());
+  const [viewYear, setViewYear] = useState(today.getFullYear());
   const [viewMonth, setViewMonth] = useState(today.getMonth());
-  const [blocked,   setBlocked]   = useState<BlockedDate[]>([]);
-  const [loading,   setLoading]   = useState(true);
-  const [saving,    setSaving]    = useState(false);
-  const [modal,     setModal]     = useState<string | null>(null);
-  const [reason,    setReason]    = useState("");
-  const [toast,     setToast]     = useState<{ msg: string; ok: boolean } | null>(null);
+  const [blocked, setBlocked] = useState<BlockedDate[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [modal, setModal] = useState<string | null>(null);
+  const [reason, setReason] = useState("");
+  const [toast, setToast] = useState<{ msg: string; ok: boolean } | null>(null);
 
   useEffect(() => {
     fetchBlocked()
@@ -250,7 +253,7 @@ export default function AdminDatePanel() {
               </div>
 
               <div className="grid grid-cols-7 px-4 pt-4 pb-1">
-                {["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(d => (
+                {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(d => (
                   <div key={d} className="text-center text-[10px] font-semibold text-white/30 uppercase tracking-widest pb-2">{d}</div>
                 ))}
               </div>
@@ -258,10 +261,10 @@ export default function AdminDatePanel() {
               <div className="grid grid-cols-7 gap-1 px-4 pb-5">
                 {cells.map((cell, i) => {
                   if (!cell) return <div key={i} />;
-                  const iso      = toISO(cell);
-                  const isPast   = cell < today;
-                  const isToday  = iso === toISO(today);
-                  const isWkend  = cell.getDay() === 0 || cell.getDay() === 6;
+                  const iso = toISO(cell);
+                  const isPast = cell < today;
+                  const isToday = iso === toISO(today);
+                  const isWkend = cell.getDay() === 0 || cell.getDay() === 6;
                   const blocked_ = isBlockedISO(iso);
                   const notAvail = isPast || isWkend;
 
@@ -275,7 +278,7 @@ export default function AdminDatePanel() {
                         relative aspect-square rounded-xl flex flex-col items-center justify-center text-sm font-medium transition-all duration-150
                         ${notAvail ? "opacity-20 cursor-not-allowed"
                           : blocked_ ? "bg-rose-500/20 border border-rose-500/50 text-rose-300 hover:bg-rose-500/30"
-                          : "hover:bg-white/10 border border-transparent hover:border-white/20 cursor-pointer"}
+                            : "hover:bg-white/10 border border-transparent hover:border-white/20 cursor-pointer"}
                         ${isToday && !blocked_ && !notAvail ? "border-blue-400/50 bg-blue-500/10" : ""}
                       `}
                     >
@@ -420,8 +423,11 @@ function QuickBlock({
   saving: boolean;
   onToggle: (iso: string) => void;
 }) {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const [today] = useState(() => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return d;
+  });
 
   const days: { iso: string; label: string; sub: string }[] = [];
   for (let i = 1; i <= 14; i++) {
