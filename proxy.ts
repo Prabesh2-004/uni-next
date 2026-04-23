@@ -9,6 +9,8 @@ const PUBLIC_ROUTES = [
   "/",
 ];
 
+const AUTH_ROUTES = ["/auth/login", "/auth/sign-up", "/auth/forgot-password"];
+
 const ADMIN_ROUTES = ["/admin"];
 
 export async function proxy(request: NextRequest) {
@@ -66,7 +68,7 @@ export async function proxy(request: NextRequest) {
     role = profile?.role ?? null;
   }
 
-  if (user && isPublicRoute) {
+  if (user && AUTH_ROUTES.some((r) => pathname.startsWith(r))) {
     if (role === "ADMIN") {
       return NextResponse.redirect(new URL("/admin", request.url));
     }

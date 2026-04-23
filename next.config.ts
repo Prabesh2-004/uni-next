@@ -5,13 +5,14 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   cacheComponents: false,
+  output: 'standalone',
   images: {
     domains: ["i.pinimg.com", "res.cloudinary.com"],
     // OR (better for newer Next.js)
     // remotePatterns: [
     //   {
     //     protocol: "https",
-    //     hostname: "i.pinimg.com",
+    //     hostname: "i.pinimg.com",  
     //   },
     // ],
   },
