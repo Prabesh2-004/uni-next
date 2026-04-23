@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  cacheComponents: true,
+  cacheComponents: false,
   images: {
     domains: ["i.pinimg.com", "res.cloudinary.com"],
     // OR (better for newer Next.js)

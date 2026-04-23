@@ -3,8 +3,6 @@ import UserInfo from "./userInfo";
 import UpdateProfileForm from "./updateProfileForm";
 import { Suspense } from "react";
 
-export const dynamic = 'force-dynamic';
-
 export default async function ProfilePage() {
     const supabase = await createClient();
 
