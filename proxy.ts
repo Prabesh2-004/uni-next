@@ -6,6 +6,9 @@ const PUBLIC_ROUTES = [
   "/auth/sign-up",
   "/auth/forgot-password",
   "/events",
+  "/resume",
+  "/strategy-hub",
+  "universities",
   "/",
 ];
 
