@@ -41,31 +41,31 @@ export function ResumePDF({ data, templateId }: { data: ResumeData; templateId: 
 // ═══════════════════════════════════════════════════════════════════════════
 
 const t1 = StyleSheet.create({
-  page: { fontFamily: "Helvetica", fontSize: 10, color: "#1a1a2e", backgroundColor: "#fff" },
+  page: { fontFamily: "Times-Roman", fontSize: 14, color: "#1a1a2e", backgroundColor: "#fff" },
   header: { backgroundColor: "#1e3a8a", padding: "28 32 22", color: "#fff" },
-  name: { fontSize: 26, fontFamily: "Helvetica-Bold", color: "#fff", letterSpacing: 0.5, marginBottom: 3 },
-  roleTag: { fontSize: 10, color: "#bfdbfe", letterSpacing: 1.5, marginBottom: 10 },
+  name: { fontSize: 48, fontFamily: "Helvetica-Bold", color: "#fff", letterSpacing: 0.5, marginBottom: 3 },
+  roleTag: { fontSize: 14, color: "#bfdbfe", letterSpacing: 1.5, marginBottom: 10 },
   contactRow: { flexDirection: "row", gap: 16, flexWrap: "wrap" },
-  contactItem: { fontSize: 9, color: "#e0e7ff" },
+  contactItem: { fontSize: 14, color: "#e0e7ff" },
   body: { flexDirection: "row", flex: 1 },
   aside: { width: 170, backgroundColor: "#eff6ff", padding: "18 14", borderRight: "1 solid #e2e8f0" },
   main: { flex: 1, padding: "18 22" },
-  sideHeading: { fontSize: 8, fontFamily: "Helvetica-Bold", color: "#1e40af", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 3 },
+  sideHeading: { fontSize: 12, fontFamily: "Helvetica-Bold", color: "#1e40af", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 3 },
   sideDivider: { height: 2, backgroundColor: "#2563eb", marginBottom: 7, width: 30 },
-  tag: { backgroundColor: "#dbeafe", color: "#1e40af", borderRadius: 3, padding: "2 6", fontSize: 8, marginRight: 3, marginBottom: 3 },
+  tag: { backgroundColor: "#dbeafe", color: "#1e40af", borderRadius: 3, padding: "2 6", fontSize: 13, marginRight: 3, marginBottom: 3 },
   tagRow: { flexDirection: "row", flexWrap: "wrap", marginBottom: 8 },
-  sideText: { fontSize: 9, color: "#374151", marginBottom: 3 },
+  sideText: { fontSize: 14, color: "#374151", marginBottom: 3 },
   sideSection: { marginBottom: 14 },
-  mainHeading: { fontSize: 11, fontFamily: "Helvetica-Bold", color: "#1e3a8a", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 2 },
+  mainHeading: { fontSize: 15, fontFamily: "Helvetica-Bold", color: "#1e3a8a", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 2 },
   accentLine: { height: 2, width: 30, backgroundColor: "#2563eb", borderRadius: 2, marginBottom: 8 },
   mainSection: { marginBottom: 16 },
   entryBlock: { marginBottom: 10 },
   entryRow: { flexDirection: "row", justifyContent: "space-between", marginBottom: 2 },
-  entryTitle: { fontSize: 10, fontFamily: "Helvetica-Bold", color: "#1e293b" },
-  entryOrg: { fontSize: 9, color: "#4b5563", marginBottom: 3 },
-  datePill: { fontSize: 8, color: "#6b7280", backgroundColor: "#f1f5f9", padding: "1 5", borderRadius: 3 },
-  paragraph: { fontSize: 9.5, lineHeight: 1.55, color: "#374151" },
-  bulletItem: { fontSize: 9.5, color: "#374151", marginBottom: 3 },
+  entryTitle: { fontSize: 14, fontFamily: "Helvetica-Bold", color: "#1e293b" },
+  entryOrg: { fontSize: 14, color: "#4b5563", marginBottom: 3 },
+  datePill: { fontSize: 13, color: "#6b7280", backgroundColor: "#f1f5f9", padding: "1 5", borderRadius: 3 },
+  paragraph: { fontSize: 15, lineHeight: 1.55, color: "#374151", marginTop: 5 },
+  bulletItem: { fontSize: 15, color: "#374151", marginBottom: 3 },
 });
 
 function PDF1({ data }: { data: ResumeData }) {
@@ -99,21 +99,21 @@ function PDF1({ data }: { data: ResumeData }) {
               <View style={t1.sideSection}>
                 <Text style={t1.sideHeading}>Soft Skills</Text>
                 <View style={t1.sideDivider} />
-                {softSkills.filter(Boolean).map((sk, i) => <Text key={i} style={t1.sideText}>▸ {sk}</Text>)}
+                {softSkills.filter(Boolean).map((sk, i) => <Text key={i} style={t1.sideText}> {sk}</Text>)}
               </View>
             )}
             {languages.filter(Boolean).length > 0 && (
               <View style={t1.sideSection}>
                 <Text style={t1.sideHeading}>Languages</Text>
                 <View style={t1.sideDivider} />
-                {languages.filter(Boolean).map((l, i) => <Text key={i} style={t1.sideText}>▸ {l}</Text>)}
+                {languages.filter(Boolean).map((l, i) => <Text key={i} style={t1.sideText}> {l}</Text>)}
               </View>
             )}
             {hobbies.filter(Boolean).length > 0 && (
               <View style={t1.sideSection}>
                 <Text style={t1.sideHeading}>Hobbies</Text>
                 <View style={t1.sideDivider} />
-                {hobbies.filter(Boolean).map((h, i) => <Text key={i} style={t1.sideText}>▸ {h}</Text>)}
+                {hobbies.filter(Boolean).map((h, i) => <Text key={i} style={t1.sideText}> {h}</Text>)}
               </View>
             )}
             {education.filter(e => e.institution).map((ed, i) => (
@@ -132,7 +132,7 @@ function PDF1({ data }: { data: ResumeData }) {
               <View style={t1.mainSection}>
                 <Text style={t1.mainHeading}>About Me</Text>
                 <View style={t1.accentLine} />
-                <Text style={t1.paragraph}>{personal.objective}</Text>
+                <Text style={t1.paragraph}> - {personal.objective}</Text>
               </View>
             )}
             {experience.filter(e => e.role || e.org).length > 0 && (
@@ -146,7 +146,7 @@ function PDF1({ data }: { data: ResumeData }) {
                       {(ex.start || ex.end) && <Text style={t1.datePill}>{ex.start}{ex.end && ` – ${ex.end}`}</Text>}
                     </View>
                     <Text style={t1.entryOrg}>{ex.org}{ex.location && ` · ${ex.location}`}</Text>
-                    {ex.desc && <Text style={t1.paragraph}>{ex.desc}</Text>}
+                    {ex.desc && <Text style={t1.paragraph}> - {ex.desc}</Text>}
                   </View>
                 ))}
               </View>

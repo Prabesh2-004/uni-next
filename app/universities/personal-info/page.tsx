@@ -5,6 +5,7 @@ import { BookText, Compass, User, Trophy, Plus, X, Sparkles } from "lucide-react
 import { useState, useRef, useCallback, useEffect, DragEvent, ChangeEvent } from "react";
 import { uploadTranscriptToCloudinary } from "./uploadTranscript";
 import { savePersonalInfo } from "./userPersonalInfo";
+import { useRouter } from 'next/navigation';
 
 type Category = "Awards" | "Leadership" | "Gap Year" | "Extracurriculars";
 type Item = { id: number; text: string };
@@ -52,6 +53,7 @@ const PersonalInfo = () => {
     const [dragging, setDragging] = useState(false);
     const [submitted, setSubmitted] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
+    const router = useRouter()
 
     // Load from localStorage on mount
     useEffect(() => {
@@ -149,6 +151,8 @@ const PersonalInfo = () => {
             // Save form data + transcript URL to Supabase
             await savePersonalInfo(form, entries, transcriptUrl);
 
+            sessionStorage.setItem('userProfile', JSON.stringify({ form, entries }));
+
             // Cleanup
             uploaded.forEach(u => { if (u.preview) URL.revokeObjectURL(u.preview); });
             localStorage.removeItem(LS_KEY);
@@ -159,6 +163,8 @@ const PersonalInfo = () => {
             setInput("");
             setSubmitted(true);
             setTimeout(() => setSubmitted(false), 3000);
+
+            router.push('/universities/personal-info/response');
 
         } catch (err) {
             console.error("Failed to submit:", err);
