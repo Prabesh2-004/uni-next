@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
   },
   cacheComponents: false,
   images: {
-    domains: ["i.pinimg.com", "res.cloudinary.com"],
+    domains: ["i.pinimg.com", "res.cloudinary.com", "external-content.duckduckgo.com"],
     // OR (better for newer Next.js)
     // remotePatterns: [
     //   {

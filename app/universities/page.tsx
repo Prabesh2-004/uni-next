@@ -1,49 +1,64 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
+import { createClient } from "@/lib/supabase/client"
 import { ArrowRight, Search } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 
 interface University {
-    id: string | number;
-    title: string;
+    id: string;
+    name: string;
+    location: string;
+    tier: number;
     description: string;
     category: string;
-    image: string;
+    image_url: string;
 }
 
 const categories = ["All", "Private", "Public", "Top Ranked", "Hotel Management", "Computer Science", "CA"]
 
-const universities: University[] = [
-    {
-        id: 1,
-        title: "Harvard University",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore..",
-        category: "Private",
-        image: "https://i.pinimg.com/1200x/64/31/55/643155cd8caec4c2779194a5da75e707.jpg"
-    },
-    {
-        id: 2,
-        title: "Cambridge University",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore..",
-        category: "Public",
-        image: "https://i.pinimg.com/736x/fe/45/d6/fe45d657ac130b2c6728de5ddf3892cf.jpg"
-    },
-    {
-        id: 3,
-        title: "Stanford University",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore..",
-        category: "CA",
-        image: "https://i.pinimg.com/1200x/ab/65/e8/ab65e8119fb5debe971917fddd23ec95.jpg"
-    },
-]
+// const universities: University[] = [
+//     {
+//         id: 1,
+//         title: "Harvard University",
+//         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore..",
+//         category: "Private",
+//         image: "https://i.pinimg.com/1200x/64/31/55/643155cd8caec4c2779194a5da75e707.jpg"
+//     },
+//     {
+//         id: 2,
+//         title: "Cambridge University",
+//         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore..",
+//         category: "Public",
+//         image: "https://i.pinimg.com/736x/fe/45/d6/fe45d657ac130b2c6728de5ddf3892cf.jpg"
+//     },
+//     {
+//         id: 3,
+//         title: "Stanford University",
+//         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore..",
+//         category: "CA",
+//         image: "https://i.pinimg.com/1200x/ab/65/e8/ab65e8119fb5debe971917fddd23ec95.jpg"
+//     },
+// ]
 
 const Universities = () => {
+    const supabase = createClient();
+    const [universities, setUniversities] = useState<University[]>([])
     const [search, setSearch] = useState("")
     const [activeCategory, setActiveCategory] = useState('All');
     const [filtered, setFiltered] = useState<University[]>(universities);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const { data } = await supabase.from("universities").select("id, name, location, tier, description, category, image_url");
+            setUniversities(data ?? [])
+        }
+
+        fetchData()
+    }, [])
+
+    // console.log(universities)
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -52,7 +67,7 @@ const Universities = () => {
                 universities.filter(
                     (u) =>
                     (
-                        u.title.toLowerCase().includes(q)
+                        u.name.toLowerCase().includes(q)
                     )
                 )
             );
@@ -89,14 +104,14 @@ const Universities = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {filtered.map((uni) => (
                     <div key={uni.id} className="p-4 bg-white dark:bg-black border border-gray-200 hover:-translate-y-1 transition duration-300 rounded-lg shadow shadow-black/10 w-full">
-                        <Image className="rounded-md max-h-40 w-full object-cover" width={200} height={100} src={uni.image} alt={uni.title} />
+                        <Image className="rounded-md max-h-40 w-full object-cover" width={200} height={100} unoptimized src={uni.image_url} alt={uni.name} />
                         <p className="text-gray-400 text-xl font-semibold ml-2 mt-4">
-                            {uni.title}
+                            {uni.name}
                         </p>
                         <p className="text-zinc-400 text-sm/6 mt-2 ml-2 mb-2">
                             {uni.description}
                         </p>
-                        <Button variant={"outline"}>Read more <ArrowRight /></Button>
+                        <Link href={`/universities/${uni.id}`} className="flex items-center gap-2 shadow dark:shadow-white shadow-black rounded-xl px-5 py-2 w-fit">Read more <ArrowRight /></Link>
                     </div>
                 ))}
             </div>

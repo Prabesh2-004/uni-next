@@ -5,10 +5,6 @@ const PUBLIC_ROUTES = [
   "/auth/login",
   "/auth/sign-up",
   "/auth/forgot-password",
-  "/events",
-  "/resume",
-  "/strategy-hub",
-  "universities",
   "/",
 ];
 
@@ -47,7 +43,9 @@ export async function proxy(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const { pathname } = request.nextUrl;
-  const isPublicRoute = PUBLIC_ROUTES.some((r) => pathname.startsWith(r));
+  const isPublicRoute = PUBLIC_ROUTES.some((r) =>
+    r === "/" ? pathname === "/" : pathname.startsWith(r),
+  );
   const isAdminRoute = ADMIN_ROUTES.some((r) => pathname.startsWith(r));
 
   // 3. Not logged in → only public routes allowed
