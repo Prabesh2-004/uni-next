@@ -9,14 +9,15 @@ import { useEffect, useState } from "react"
 interface University {
     id: string;
     name: string;
-    location: string;
-    tier: number;
+    city: string;
+    country: string;
+    tier: string;
     description: string;
-    category: string;
-    image_url: string;
+    hero_image: string;
+    slug: string;
 }
 
-const categories = ["All", "Private", "Public", "Top Ranked", "Hotel Management", "Computer Science", "CA"]
+const categories = ["All", "Mid", "Top", "Mid-High", "Low", "Mid-Low"]
 
 // const universities: University[] = [
 //     {
@@ -51,7 +52,7 @@ const Universities = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const { data } = await supabase.from("universities").select("id, name, location, tier, description, category, image_url");
+            const { data } = await supabase.from("university").select("id, name, city, country, tier, description, hero_image, slug");
             setUniversities(data ?? [])
         }
 
@@ -78,7 +79,7 @@ const Universities = () => {
     useEffect(() => {
         setFiltered(activeCategory === 'All'
             ? universities
-            : universities.filter(event => event.category === activeCategory))
+            : universities.filter(event => `${event.tier}` === `${activeCategory}-tier`))
     }, [activeCategory])
 
     return (
@@ -104,14 +105,14 @@ const Universities = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {filtered.map((uni) => (
                     <div key={uni.id} className="p-4 bg-white dark:bg-black border border-gray-200 hover:-translate-y-1 transition duration-300 rounded-lg shadow shadow-black/10 w-full">
-                        <Image className="rounded-md max-h-40 w-full object-cover" width={200} height={100} unoptimized src={uni.image_url} alt={uni.name} />
+                        <Image className="rounded-md max-h-40 w-full object-cover" width={200} height={100} unoptimized src={uni?.hero_image} alt={uni.name} />
                         <p className="text-gray-400 text-xl font-semibold ml-2 mt-4">
                             {uni.name}
                         </p>
                         <p className="text-zinc-400 text-sm/6 mt-2 ml-2 mb-2">
                             {uni.description}
                         </p>
-                        <Link href={`/universities/${uni.id}`} className="flex items-center gap-2 shadow dark:shadow-white shadow-black rounded-xl px-5 py-2 w-fit">Read more <ArrowRight /></Link>
+                        <Link href={`/universities/${uni.slug}`} className="flex items-center gap-2 shadow dark:shadow-white shadow-black rounded-xl px-5 py-2 w-fit">Read more <ArrowRight /></Link>
                     </div>
                 ))}
             </div>

@@ -164,7 +164,7 @@ export default function Booking() {
     phone: "",
     details: "",
   });
-  const [formErrors, setFormErrors] = useState<FormErrors>({});
+  // const [formErrors, setFormErrors] = useState<FormErrors>({});
 
   useEffect(() => {
     const savedSteps = localStorage.getItem("steps");
@@ -226,7 +226,7 @@ export default function Booking() {
     if (!emailRegex.test(formData.email.trim())) {
       errors.email = "Invalid email address";
     }
-    setFormErrors(errors);
+    // setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
@@ -408,12 +408,13 @@ export default function Booking() {
             setFormData((prev) => ({ ...prev, name: e.target.value }))
           }
           className={`w-full px-4 py-2.5 rounded-lg border-2 bg-transparent text-sm outline-none transition-colors
-            ${formErrors.name ? "border-red-400 focus:border-red-500" : "border-gray-200 dark:border-gray-700 focus:border-blue-500"}
+            border-gray-200 dark:border-gray-700 focus:border-blue-500
             text-gray-900 dark:text-gray-100 placeholder:text-gray-400`}
+          required
         />
-        {formErrors.name && (
+        {/* {formErrors.name && (
           <p className="text-red-500 text-xs">{formErrors.name}</p>
-        )}
+        )} */}
       </div>
 
       <div className="space-y-1">
@@ -428,12 +429,13 @@ export default function Booking() {
             setFormData((prev) => ({ ...prev, email: e.target.value }))
           }
           className={`w-full px-4 py-2.5 rounded-lg border-2 bg-transparent text-sm outline-none transition-colors
-            ${formErrors.email ? "border-red-400 focus:border-red-500" : "border-gray-200 dark:border-gray-700 focus:border-blue-500"}
+            border-gray-200 dark:border-gray-700 focus:border-blue-500
             text-gray-900 dark:text-gray-100 placeholder:text-gray-400`}
+          required
         />
-        {formErrors.email && (
+        {/* {formErrors.email && (
           <p className="text-red-500 text-xs">{formErrors.email}</p>
-        )}
+        )} */}
       </div>
 
       <div className="space-y-1">
@@ -448,12 +450,13 @@ export default function Booking() {
             setFormData((prev) => ({ ...prev, phone: e.target.value }))
           }
           className={`w-full px-4 py-2.5 rounded-lg border-2 bg-transparent text-sm outline-none transition-colors
-            ${formErrors.phone ? "border-red-400 focus:border-red-500" : "border-gray-200 dark:border-gray-700 focus:border-blue-500"}
+            border-gray-200 dark:border-gray-700 focus:border-blue-500
             text-gray-900 dark:text-gray-100 placeholder:text-gray-400`}
+            required
         />
-        {formErrors.phone && (
+        {/* {formErrors.phone && (
           <p className="text-red-500 text-xs">{formErrors.phone}</p>
-        )}
+        )} */}
       </div>
 
       <div className="space-y-1">
