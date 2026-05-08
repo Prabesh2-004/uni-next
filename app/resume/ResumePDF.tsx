@@ -12,6 +12,7 @@ import {
   pdf,
 } from "@react-pdf/renderer";
 import { ResumeData } from "./types";
+import { renderPdfHtml } from "./renderHtmlPdf";
 
 // ─── Download helper ───────────────────────────────────────────────────────
 
@@ -41,12 +42,12 @@ export function ResumePDF({ data, templateId }: { data: ResumeData; templateId: 
 // ═══════════════════════════════════════════════════════════════════════════
 
 const t1 = StyleSheet.create({
-  page: { fontFamily: "Times-Roman", fontSize: 14, color: "#1a1a2e", backgroundColor: "#fff" },
+  page: { fontFamily: "Times-Roman", fontSize: 10.5, color: "#1a1a2e", backgroundColor: "#fff" },
   header: { backgroundColor: "#1e3a8a", padding: "28 32 22", color: "#fff" },
-  name: { fontSize: 48, fontFamily: "Helvetica-Bold", color: "#fff", letterSpacing: 0.5, marginBottom: 3 },
-  roleTag: { fontSize: 14, color: "#bfdbfe", letterSpacing: 1.5, marginBottom: 10 },
+  name: { fontSize: 28, fontFamily: "Helvetica-Bold", color: "#fff", letterSpacing: 0.5, marginBottom: 3 },
+  roleTag: { fontSize: 10.5, color: "#bfdbfe", letterSpacing: 1.5, marginBottom: 10 },
   contactRow: { flexDirection: "row", gap: 16, flexWrap: "wrap" },
-  contactItem: { fontSize: 14, color: "#e0e7ff" },
+  contactItem: { fontSize: 10.5, color: "#e0e7ff" },
   body: { flexDirection: "row", flex: 1 },
   aside: { width: 170, backgroundColor: "#eff6ff", padding: "18 14", borderRight: "1 solid #e2e8f0" },
   main: { flex: 1, padding: "18 22" },
@@ -54,18 +55,18 @@ const t1 = StyleSheet.create({
   sideDivider: { height: 2, backgroundColor: "#2563eb", marginBottom: 7, width: 30 },
   tag: { backgroundColor: "#dbeafe", color: "#1e40af", borderRadius: 3, padding: "2 6", fontSize: 13, marginRight: 3, marginBottom: 3 },
   tagRow: { flexDirection: "row", flexWrap: "wrap", marginBottom: 8 },
-  sideText: { fontSize: 14, color: "#374151", marginBottom: 3 },
+  sideText: { fontSize: 10.5, color: "#374151", marginBottom: 3 },
   sideSection: { marginBottom: 14 },
-  mainHeading: { fontSize: 15, fontFamily: "Helvetica-Bold", color: "#1e3a8a", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 2 },
+  mainHeading: { fontSize: 10, fontFamily: "Helvetica-Bold", color: "#1e3a8a", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 2 },
   accentLine: { height: 2, width: 30, backgroundColor: "#2563eb", borderRadius: 2, marginBottom: 8 },
   mainSection: { marginBottom: 16 },
   entryBlock: { marginBottom: 10 },
   entryRow: { flexDirection: "row", justifyContent: "space-between", marginBottom: 2 },
-  entryTitle: { fontSize: 14, fontFamily: "Helvetica-Bold", color: "#1e293b" },
-  entryOrg: { fontSize: 14, color: "#4b5563", marginBottom: 3 },
+  entryTitle: { fontSize: 11, fontFamily: "Helvetica-Bold", color: "#1e293b" },
+  entryOrg: { fontSize: 9.5, color: "#4b5563", marginBottom: 3 },
   datePill: { fontSize: 13, color: "#6b7280", backgroundColor: "#f1f5f9", padding: "1 5", borderRadius: 3 },
-  paragraph: { fontSize: 15, lineHeight: 1.55, color: "#374151", marginTop: 5 },
-  bulletItem: { fontSize: 15, color: "#374151", marginBottom: 3 },
+  paragraph: { fontSize: 10, lineHeight: 1.45, color: "#374151", marginTop: 5, alignItems: "center", fontFamily: "Times-Roman" },
+  bulletItem: { fontSize: 10, color: "#374151", marginBottom: 3 },
 });
 
 function PDF1({ data }: { data: ResumeData }) {
@@ -146,7 +147,7 @@ function PDF1({ data }: { data: ResumeData }) {
                       {(ex.start || ex.end) && <Text style={t1.datePill}>{ex.start}{ex.end && ` – ${ex.end}`}</Text>}
                     </View>
                     <Text style={t1.entryOrg}>{ex.org}{ex.location && ` · ${ex.location}`}</Text>
-                    {ex.desc && <Text style={t1.paragraph}> - {ex.desc}</Text>}
+                    {ex.desc && renderPdfHtml(ex.desc, t1.paragraph)}
                   </View>
                 ))}
               </View>
@@ -181,7 +182,7 @@ const t2 = StyleSheet.create({
   sidebar: { width: 175, backgroundColor: "#0f172a", padding: "28 14" },
   avatar: { width: 55, height: 55, borderRadius: 28, backgroundColor: "#0d9488", marginBottom: 10, alignSelf: "center", alignItems: "center", justifyContent: "center" },
   avatarText: { color: "#fff", fontSize: 22, fontFamily: "Helvetica-Bold" },
-  sName: { fontSize: 14, fontFamily: "Helvetica-Bold", color: "#f8fafc", textAlign: "center", marginBottom: 3, lineHeight: 1.2 },
+  sName: { fontSize: 10.5, fontFamily: "Helvetica-Bold", color: "#f8fafc", textAlign: "center", marginBottom: 3, lineHeight: 1.2 },
   sRole: { fontSize: 8, color: "#0d9488", textAlign: "center", letterSpacing: 1.5, marginBottom: 12 },
   sContactItem: { fontSize: 8.5, color: "#94a3b8", marginBottom: 4 },
   sDivider: { height: 1, backgroundColor: "#1e293b", marginBottom: 7 },
@@ -267,7 +268,7 @@ function PDF2({ data }: { data: ResumeData }) {
                     {(ex.start || ex.end) && <Text style={t2.datePill}>{ex.start}{ex.end && ` – ${ex.end}`}</Text>}
                   </View>
                   <Text style={t2.entryOrg}>{ex.org}{ex.location && ` · ${ex.location}`}</Text>
-                  {ex.desc && <Text style={t2.para}>{ex.desc}</Text>}
+                  {ex.desc && renderPdfHtml(ex.desc, t2.paragraph)}
                 </View>
               ))}
             </View>

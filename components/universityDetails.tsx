@@ -116,7 +116,7 @@ export default function UniversityPage({ data }: Props) {
         { label: "SAT Range", value: data?.requirements[0]?.sat_range },
         { label: "ACT Range", value: data?.requirements[0]?.act_range },
         { label: "Minimum IELTS", value: data?.requirements[0]?.min_ielts },
-        { label: "Acceptance Rate", value:`~${data?.stats[0]?.acceptance_rate}` },
+        { label: "Acceptance Rate", value: `~${data?.stats[0]?.acceptance_rate}` },
         { label: "Minimum GPA", value: data?.requirements[0]?.min_gpa },
     ];
     console.log(data)
@@ -186,7 +186,7 @@ export default function UniversityPage({ data }: Props) {
                     </p>
 
                     {/* Departments */}
-                    <div className="pt-12">
+                    {data?.departments.length !== 0 && <div className="pt-12">
                         <h3 className="font-serif text-2xl font-medium text-[#0A2342] mb-6">
                             Distinguished Departments
                         </h3>
@@ -206,7 +206,7 @@ export default function UniversityPage({ data }: Props) {
                                 </div>
                             ))}
                         </div>
-                    </div>
+                    </div>}
                 </div>
 
                 {/* Side Cards */}
@@ -225,7 +225,7 @@ export default function UniversityPage({ data }: Props) {
                             ))}
                         </div>
                         <Link href={`${data?.website}`} target="_blank" className="w-full bg-[#FED488] text-[#5D4201] py-4 rounded-lg text-sm font-semibold tracking-wide hover:scale-[1.02] active:scale-95 transition-all shadow-lg flex items-center justify-center gap-2">
-                            APPLY TO STANFORD
+                            APPLY NOW
                             <span className="material-symbols-outlined text-[18px]"><ArrowRight /></span>
                         </Link>
                     </div>

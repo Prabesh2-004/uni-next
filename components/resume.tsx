@@ -24,6 +24,9 @@ import {
   Users,
   BookOpen,
   Loader2,
+  Bold,
+  Italic,
+  List,
 } from "lucide-react";
 import {
   CvDraft,
@@ -40,6 +43,10 @@ import {
   saveResume,
   getCurrentUser,
 } from "./cv-template/resumeService";
+import { useEditor, EditorContent } from "@tiptap/react";
+import { BulletList } from '@tiptap/extension-list'
+import StarterKit from "@tiptap/starter-kit";
+
 
 // ─── Draft Hook ───────────────────────────────────────────────────────────────
 
@@ -70,6 +77,78 @@ function useCvDraft() {
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
+
+function RichTextEditor({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  const editor = useEditor({
+    extensions: [StarterKit, BulletList],
+    content: value,
+    onUpdate: ({ editor }) => onChange(editor.getHTML()),
+    editorProps: {
+      attributes: {
+        class:
+          "min-h-[80px] px-3 py-2 text-sm outline-none " +
+          "text-slate-800 dark:text-slate-100 prose prose-sm max-w-none dark:prose-invert",
+      },
+    },
+    immediatelyRender: false,
+  });
+
+  return (
+    <div className="flex flex-col gap-1">
+      <label className={labelBase}>{label}</label>
+      <div
+        className="border rounded-lg overflow-hidden transition-all
+          bg-white dark:bg-slate-800
+          border-slate-200 dark:border-slate-700
+          focus-within:border-blue-500 dark:focus-within:border-blue-400
+          focus-within:ring-2 focus-within:ring-blue-500/10"
+      >
+        {/* Toolbar */}
+        <div className="flex gap-1 px-2 py-1.5 border-b border-slate-100 dark:border-slate-700">
+          <button
+            type="button"
+            onClick={() => editor?.chain().focus().toggleBold().run()}
+            className={`p-1 rounded text-xs transition-colors ${editor?.isActive("bold")
+              ? "bg-slate-200 dark:bg-slate-600"
+              : "hover:bg-slate-100 dark:hover:bg-slate-700"
+              }`}
+          >
+            <Bold size={13} />
+          </button>
+          <button
+            type="button"
+            onClick={() => editor?.chain().focus().toggleItalic().run()}
+            className={`p-1 rounded text-xs transition-colors ${editor?.isActive("italic")
+              ? "bg-slate-200 dark:bg-slate-600"
+              : "hover:bg-slate-100 dark:hover:bg-slate-700"
+              }`}
+          >
+            <Italic size={13} />
+          </button>
+          <button
+            type="button"
+            onClick={() => editor?.chain().focus().toggleBulletList().run()}
+            className={`p-1 rounded text-xs transition-colors ${editor?.isActive("bulletList")
+              ? "bg-slate-200 dark:bg-slate-600"
+              : "hover:bg-slate-100 dark:hover:bg-slate-700"
+              }`}
+          >
+            <List size={13} />
+          </button>
+        </div>
+        <EditorContent editor={editor} />
+      </div>
+    </div>
+  );
+}
 
 function upItem<T>(
   set: (a: T[]) => void,
@@ -470,14 +549,10 @@ function EducationExperience({
                 />
               </div>
               <div className="col-span-full">
-                <TextArea
+                <RichTextEditor
                   label="Description"
                   value={e.desc}
-                  onChange={(v) =>
-                    upItem(setExperience, experience, i, "desc", v)
-                  }
-                  placeholder="Describe your responsibilities and achievements..."
-                  rows={3}
+                  onChange={(v) => upItem(setExperience, experience, i, "desc", v)}
                 />
               </div>
             </div>
@@ -541,15 +616,6 @@ const SK_CFG = [
   },
 ] as const;
 
-const tagBg: Record<string, string> = {
-  blue: "bg-blue-50 dark:bg-blue-950/40 border-l-blue-500",
-  violet: "bg-violet-50 dark:bg-violet-950/40 border-l-violet-500",
-  emerald: "bg-emerald-50 dark:bg-emerald-950/40 border-l-emerald-500",
-  amber: "bg-amber-50 dark:bg-amber-950/40 border-l-amber-500",
-  red: "bg-red-50 dark:bg-red-950/40 border-l-red-500",
-  pink: "bg-pink-50 dark:bg-pink-950/40 border-l-pink-500",
-};
-
 function SkillsAll({
   draft,
   setDraft,
@@ -559,20 +625,19 @@ function SkillsAll({
 }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-      {SK_CFG.map(({ key, label, icon, ph, col, tag }) => {
+      {SK_CFG.map(({ key, label, icon, ph, col }) => {
         const arr = draft[key as keyof ResumeData] as string[];
         const set = (next: string[]) =>
           setDraft((d) => ({ ...d, [key]: next }));
         return (
           <div
             key={key}
-            className={`${tagBg[tag]} border border-slate-200 dark:border-slate-700
+            className={`border border-slate-200 dark:border-slate-700
               border-l-[3px] rounded-xl p-3.5 flex flex-col gap-2.5`}
           >
             <div className="flex justify-between items-center">
               <div
                 className="flex items-center gap-2 text-xs font-bold"
-                style={{ color: col }}
               >
                 <span style={{ color: col }}>{icon}</span>
                 <span>{label}</span>
@@ -582,7 +647,7 @@ function SkillsAll({
                 onClick={() => set([...arr, ""])}
                 className="flex items-center gap-1 text-xs font-semibold
                   px-2.5 py-0.5 rounded-full border transition-opacity hover:opacity-70"
-                style={{ color: col, borderColor: col + "55" }}
+                style={{ borderColor: col + "55" }}
               >
                 <Plus size={11} /> Add
               </button>
@@ -903,8 +968,8 @@ function TemplateSelect({
           {selected && (
             <span
               className={`ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full tracking-wide transition-colors ${saveStatus === "saving"
-                  ? "bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400 animate-pulse"
-                  : "bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400"
+                ? "bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400 animate-pulse"
+                : "bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400"
                 }`}
             >
               {saveStatus === "saving" ? "SAVING..." : "LIVE"}

@@ -11,6 +11,30 @@ export default function Template2({ data }: Props) {
 
   return (
     <div style={s.root}>
+      <style>{`
+    .desc-html ul {
+      list-style: disc;
+      margin: 4px 0;
+    }
+    .desc-html ol {
+      list-style: decimal;
+      padding-left: 18px;
+      margin: 4px 0;
+    }
+    .desc-html li {
+      font-size: 14px;
+      color: #374151;
+      margin-bottom: 2px;
+      line-height: 1.5;
+    }
+    .desc-html p {
+      margin: 0 0 4px;
+      font-size: 14px;
+      color: #374151;
+    }
+    .desc-html strong { font-weight: 700; }
+    .desc-html em { font-style: italic; }
+  `}</style>
       {/* ── Sidebar ── */}
       <aside style={s.sidebar}>
         {/* Avatar placeholder */}
@@ -92,7 +116,13 @@ export default function Template2({ data }: Props) {
                     )}
                   </div>
                   <p style={s.entryOrg}>{ex.org}{ex.location && ` · ${ex.location}`}</p>
-                  {ex.desc && <p style={s.paragraph}>{ex.desc}</p>}
+                  <div>
+                    <div
+                      className="desc-html"
+                      style={s.descHtml}
+                      dangerouslySetInnerHTML={{ __html: ex.desc }}
+                    />
+                  </div>
                 </div>
               </div>
             ))}
@@ -178,7 +208,7 @@ const s: Record<string, React.CSSProperties> = {
     width: 794,
     minHeight: 1123,
     display: "flex",
-    fontFamily: "'Helvetica Neue', Arial, sans-serif",
+    fontFamily: "'Georgia', Arial, sans-serif",
     fontSize: 12,
     background: "#fff",
   },
@@ -274,5 +304,11 @@ const s: Record<string, React.CSSProperties> = {
     marginBottom: 5,
     paddingLeft: 12,
     position: "relative",
+  },
+  descHtml: {
+    fontSize: 14,
+    lineHeight: 1.65,
+    color: "#374151",
+    paddingLeft: 0,
   },
 };
