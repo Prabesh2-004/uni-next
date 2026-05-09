@@ -16,6 +16,7 @@ export default function Template1({ data }: Props) {
       <style>{`
     .desc-html ul {
       list-style: disc;
+      padding-left: 18px;   
       margin: 4px 0;
     }
     .desc-html ol {

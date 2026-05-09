@@ -44,7 +44,6 @@ import {
   getCurrentUser,
 } from "./cv-template/resumeService";
 import { useEditor, EditorContent } from "@tiptap/react";
-import { BulletList } from '@tiptap/extension-list'
 import StarterKit from "@tiptap/starter-kit";
 
 
@@ -88,7 +87,7 @@ function RichTextEditor({
   onChange: (v: string) => void;
 }) {
   const editor = useEditor({
-    extensions: [StarterKit, BulletList],
+    extensions: [StarterKit],
     content: value,
     onUpdate: ({ editor }) => onChange(editor.getHTML()),
     editorProps: {
