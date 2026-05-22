@@ -116,12 +116,12 @@ const data = {
   projects: [
     {
       name: "Live Events",
-      url: "admin/events",
+      url: "/admin/events",
       icon: Calendar,
     },
     {
       name: "Host Events",
-      url: "admin/host-events",
+      url: "/admin/host-events",
       icon: CalendarPlus,
     },
   ],
