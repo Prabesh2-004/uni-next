@@ -19,30 +19,6 @@ interface University {
 
 const categories = ["All", "Mid", "Top", "Mid-High", "Low", "Mid-Low"]
 
-// const universities: University[] = [
-//     {
-//         id: 1,
-//         title: "Harvard University",
-//         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore..",
-//         category: "Private",
-//         image: "https://i.pinimg.com/1200x/64/31/55/643155cd8caec4c2779194a5da75e707.jpg"
-//     },
-//     {
-//         id: 2,
-//         title: "Cambridge University",
-//         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore..",
-//         category: "Public",
-//         image: "https://i.pinimg.com/736x/fe/45/d6/fe45d657ac130b2c6728de5ddf3892cf.jpg"
-//     },
-//     {
-//         id: 3,
-//         title: "Stanford University",
-//         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore..",
-//         category: "CA",
-//         image: "https://i.pinimg.com/1200x/ab/65/e8/ab65e8119fb5debe971917fddd23ec95.jpg"
-//     },
-// ]
-
 const Universities = () => {
     const supabase = createClient();
     const [universities, setUniversities] = useState<University[]>([])

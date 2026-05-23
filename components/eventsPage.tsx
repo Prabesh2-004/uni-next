@@ -109,7 +109,7 @@ export default function EventsPage() {
               </p>
               <Link
                 href={`/events/register?event=${event?.title}`}
-                className="w-full bg-secondary text-secondary-fixed py-5 text-center font-semibold tracking-wide hover:bg-gray-800 rounded-full hover:text-on-secondary transition-colors duration-300 block"
+                className="w-full bg-secondary text-primary-fixed py-5 text-center font-semibold tracking-wide hover:bg-gray-800 rounded-full hover:text-on-secondary transition-colors duration-300 block"
               >
                 Register Now
               </Link>
@@ -156,7 +156,7 @@ export default function EventsPage() {
                     alt={event.title}
                     src={event.image_url}
                   />
-                  <div className="absolute top-4 left-4 bg-secondary rounded-lg px-4 py-2 text-secondary-fixed text-center">
+                  <div className="absolute top-4 left-4 bg-secondary rounded-lg px-4 py-2 text-primary-fixed text-center">
                     <span className="block text-xl font-bold leading-none">{months[parseInt(event.date.split("-")[1]) - 1]}</span>
                     <span className="text-[10px] uppercase tracking-tighter">{event.date.split("-")[2]}</span>
                   </div>

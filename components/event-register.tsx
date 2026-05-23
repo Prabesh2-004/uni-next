@@ -259,7 +259,7 @@ function RegisterFormContent() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-secondary text-secondary-fixed py-4 rounded-lg font-semibold text-lg tracking-wide hover:bg-secondary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-secondary text-primary-fixed py-4 rounded-lg font-semibold text-lg tracking-wide hover:bg-secondary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? (
                 <span className="flex items-center justify-center gap-2">

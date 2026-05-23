@@ -258,7 +258,7 @@ export default function AdminAddEventPage() {
                 </div>
                 <button
                   onClick={() => set('is_active', !form.is_active)}
-                  className={`relative w-10 h-5 rounded-full transition-colors ${form.is_active ? 'bg-primary' : 'bg-outline-variant'}`}
+                  className={`relative w-10 h-5 rounded-full transition-colors ${form.is_active ? 'bg-secondary' : 'bg-outline-variant'}`}
                 >
                   <span className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${form.is_active ? 'translate-x-5' : 'translate-x-0'}`} />
                 </button>
@@ -270,7 +270,7 @@ export default function AdminAddEventPage() {
                 </div>
                 <button
                   onClick={() => set('priority', !form.priority)}
-                  className={`relative w-10 h-5 rounded-full transition-colors ${form.priority ? 'bg-primary' : 'bg-outline-variant'}`}
+                  className={`relative w-10 h-5 rounded-full transition-colors ${form.priority ? 'bg-secondary' : 'bg-outline-variant'}`}
                 >
                   <span className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${form.priority ? 'translate-x-5' : 'translate-x-0'}`} />
                 </button>

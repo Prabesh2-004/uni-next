@@ -68,41 +68,9 @@ interface Props {
     data: University | null;
 }
 
-// const HERO_IMAGE =
-//     "https://lh3.googleusercontent.com/aida-public/AB6AXuDp42mKWLfW2B-20xh3ymfDQ2uYPsjxnUup4CuITGX36uRf0468-5CsX_pl2UlecmRD_fd0WdysF5Unhk2rtmt5TK5RjS1e6qAXG645eSDj6vEL5ZdKZcQfHzUcCSGn24LQFJGTucQ2Gk4Dh_fDfZrziFvUkJa9YMQrz4v_mj8mP1DQ12rGCrNMvckhY5TY-TPExrWT1E6JgUQfir7cokMS0RszV9LHDNPU9IoGYj_RWNBsbATQW7r5UBQp33Au4LnkC7SuridYb_o";
-
-// const LOGO_IMAGE =
-//     "https://lh3.googleusercontent.com/aida-public/AB6AXuDdaR6Sb7EgBt7LPfqeZCrrHkAX667kxKRcZun6EvfoFAacdWDLCj1h2DtB_2lSMt5_nMPr-PBqyXhkVdhhtXPz2hyhFdAvgk8Jmjlg85wFy10wehkkeoEekx7sGNT_2FTxy86UuCiNtjSy8CQMGAEABjdFjy0NJfxf05DCzJTzyqQvFSx6yGWoSBHTTQgojGsUQQdNXfFWVWy-aCqPUHmp0_CEYwz5iJyvRFk3pbQ3aI2HvE8c0gJdN6SL4RFaMKZdAxI7khH1x40";
-
 const LAB_IMAGE =
     "https://lh3.googleusercontent.com/aida-public/AB6AXuDDh3cvD7Edxk_2RecRVFjKURAUkdsrwu9kzxZ-dXY0AgPp14H0WdWmwa-eCMuoUkmCHE6YoYaNzgCmLRb9vqtaUAg874AKphm-MTb_MmxcwV-OSCAJBqQNnJCyrcBwNROPmkz4cFsAwblZjijQNnyxtsyX6IY5-tTBR0ZcvHIn5Heeo1RBWYBmEorXq96BDQWisZmMyr2P41PTY2sQhvI0Y5KYxYVeNvRyqM1pdbeayqKcwTSTaheAPIeSJfTmEknB4MNSba2yXtg";
 
-// const stats = [
-//     { icon: "leaderboard", label: "World Ranking", value: "#3", sub: "QS World 2024" },
-//     { icon: "location_on", label: "Location", value: "Stanford, CA", sub: "Bay Area" },
-//     { icon: "groups", label: "Enrollment", value: "~17,000", sub: "Undergrad + Grad" },
-//     { icon: "account_balance", label: "Research Institution", value: "Private", sub: "Status" },
-// ];
-
-// const departments = [
-//     { icon: "code", name: "Computer Science", desc: "World-renowned research center" },
-//     { icon: "engineering", name: "Engineering", desc: "Cutting-edge technical innovation" },
-//     { icon: "gavel", name: "Stanford Law", desc: "Global leader in legal education" },
-//     { icon: "medical_services", name: "School of Medicine", desc: "Pioneering healthcare research" },
-// ];
-
-// const admissionStats = [
-//     { label: "SAT Range", value: "1470–1570" },
-//     { label: "ACT Range", value: "34–35" },
-//     { label: "Acceptance Rate", value: "~3.9%" },
-//     { label: "Regular Decision", value: "Jan 5" },
-// ];
-
-// const campusLife = [
-//     { icon: "home", text: "Guaranteed housing for all 4 years of undergraduate study." },
-//     { icon: "diversity_3", text: "Over 600 student-led organizations and cultural centers." },
-//     { icon: "directions_bike", text: "Vibrant Palo Alto surroundings with tech hubs and nature trails." },
-// ];
 
 export default function UniversityPage({ data }: Props) {
     const stats = [
