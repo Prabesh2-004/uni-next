@@ -350,7 +350,7 @@ export default function AdminUsersPage() {
                           </button>
 
                           {rolePopover === p.id && (
-                            <div className="absolute left-0 top-full mt-1 z-30 bg-surface-container-lowest rounded-xl border border-outline-variant/20 shadow-xl py-1 w-40 animate-in fade-in slide-in-from-top-1">
+                            <div className="absolute left-0 top-full mt-1 z-30 bg-black rounded-xl border border-outline-variant/20 shadow-xl py-1 w-40 animate-in fade-in slide-in-from-top-1">
                               <p className="text-[10px] text-on-surface-variant/50 uppercase tracking-wider px-3 py-1.5 font-semibold">Change role</p>
                               {ROLES.map(role => {
                                 const cfg = ROLE_CONFIG[role];
