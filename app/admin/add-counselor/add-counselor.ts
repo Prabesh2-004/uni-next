@@ -74,6 +74,7 @@ export async function createCounselor(formData: CounselorFormData) {
       last_name: formData.lastName,
       email: formData.email,
       phone: formData.phone,
+      password: formData.password,
     });
   
   if (counselorError) {

@@ -1,54 +1,40 @@
+// middleware.ts (or utils/supabase/middleware.ts — wherever your proxy lives)
 import { createServerClient } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
 
-const PUBLIC_ROUTES = [
-  "/auth/login",
-  "/auth/sign-up",
-  "/auth/forgot-password",
-  "/",
-];
-
-const AUTH_ROUTES = ["/auth/login", "/auth/sign-up", "/auth/forgot-password"];
-
-const ADMIN_ROUTES = ["/admin"];
+const PUBLIC_ROUTES   = ["/auth/login", "/auth/sign-up", "/auth/forgot-password", "/"];
+const AUTH_ROUTES     = ["/auth/login", "/auth/sign-up", "/auth/forgot-password"];
+const ADMIN_ROUTES    = ["/admin"];
+const COUNSELOR_ROUTES = ["/counselor"];
 
 export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
-  // 1. Build client — this is what updateSession does internally
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        getAll() {
-          return request.cookies.getAll();
-        },
+        getAll() { return request.cookies.getAll(); },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value),
-          );
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
           supabaseResponse = NextResponse.next({ request });
           cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options),
+            supabaseResponse.cookies.set(name, value, options)
           );
         },
       },
-    },
+    }
   );
 
-  // 2. getUser() refreshes the session cookie — MUST run on every request
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { data: { user } } = await supabase.auth.getUser();
 
   const { pathname } = request.nextUrl;
-  const isPublicRoute = PUBLIC_ROUTES.some((r) =>
-    r === "/" ? pathname === "/" : pathname.startsWith(r),
-  );
-  const isAdminRoute = ADMIN_ROUTES.some((r) => pathname.startsWith(r));
+  const isPublicRoute   = PUBLIC_ROUTES.some((r) => r === "/" ? pathname === "/" : pathname.startsWith(r));
+  const isAdminRoute    = ADMIN_ROUTES.some((r) => pathname.startsWith(r));
+  const isCounselorRoute = COUNSELOR_ROUTES.some((r) => pathname.startsWith(r));
 
-  // 3. Not logged in → only public routes allowed
+  // ── Not logged in ────────────────────────────────────────────────────────
   if (!user && !isPublicRoute) {
     const url = request.nextUrl.clone();
     url.pathname = "/auth/login";
@@ -56,7 +42,7 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // 4. Logged in but visiting an auth page → redirect to home
+  // ── Fetch role once (only if logged in) ───────────────────────────────────
   let role: string | null = null;
 
   if (user) {
@@ -65,28 +51,42 @@ export async function proxy(request: NextRequest) {
       .select("role")
       .eq("id", user.id)
       .single();
-
     role = profile?.role ?? null;
   }
 
+  // ── Logged-in user visiting auth pages → redirect by role ─────────────────
   if (user && AUTH_ROUTES.some((r) => pathname.startsWith(r))) {
-    if (role === "ADMIN") {
-      return NextResponse.redirect(new URL("/admin", request.url));
-    }
+    if (role === "ADMIN")     return NextResponse.redirect(new URL("/admin",     request.url));
+    if (role === "COUNSELOR") return NextResponse.redirect(new URL("/counselor", request.url));
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  // 5. Admin route → check role in profiles table
-  if (user && isAdminRoute) {
-    if (role !== "ADMIN") {
-      // Get the last active page from referrer or redirect to protected
-      const referrer = request.headers.get("referer");
-      const lastActivePage =
-        referrer && new URL(referrer).pathname !== pathname
-          ? referrer
-          : new URL("/", request.url).toString();
+  // ── Admin route guard ─────────────────────────────────────────────────────
+  if (user && isAdminRoute && role !== "ADMIN") {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
 
-      return NextResponse.redirect(new URL(lastActivePage));
+  // ── Counselor route guard ─────────────────────────────────────────────────
+  if (user && isCounselorRoute) {
+    if (role !== "COUNSELOR" && role !== "ADMIN") {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+
+    // Extra check: counselor must have a counselor record
+    if (role === "COUNSELOR") {
+      const { data: counselorRow } = await supabase
+        .from("counselor")
+        .select("id")
+        .eq("profile_id", user.id)
+        .maybeSingle();
+
+      if (!counselorRow) {
+        // Sign them out and redirect to login with an error message
+        const url = request.nextUrl.clone();
+        url.pathname = "/auth/login";
+        url.searchParams.set("error", "counselor_profile_missing");
+        return NextResponse.redirect(url);
+      }
     }
   }
 
@@ -95,7 +95,6 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Run on every route except static files
     "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
