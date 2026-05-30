@@ -20,6 +20,7 @@ import {
   Menu,
   SettingsIcon,
   University,
+  User,
   UserIcon,
 } from "lucide-react";
 import { LogoutButton } from "./logout-button";
@@ -64,6 +65,12 @@ export function UserMenu() {
             <Lightbulb />
             <Link href="/strategy-hub">
               Strategy Hub
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <User />
+            <Link href={"/admin"}>
+              Admin
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
